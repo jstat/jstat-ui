@@ -7,7 +7,8 @@ DIST_DIR = ${PREFIX}/dist
 JS_ENGINE ?= `which node nodejs`
 COMPILER = ${JS_ENGINE} ${BUILD_DIR}/uglify.js --unsafe
 
-BASE_DIRS = `ls ${SRC_DIR}`
+FLOT_DIR = ${SRC_DIR}/flot
+FLOT_FILES = ${FLOT_DIR}/core.js
 
 DOC_DIR = doc
 DOC_LIST = `ls ${DOC_DIR}/md/`
@@ -18,12 +19,20 @@ clean:
 	@@echo "Removing Distribution directory:" ${DIST_DIR}
 	@@rm -rf ${DIST_DIR}
 
-core: jstatui min lint
+core: flot min lint
 	@@echo "jStat UI build complete."
 
-min: jstatui plugin_min
+min: flot
+	@@if test ! -z ${JS_ENGINE}; then \
+		echo "Minifying jStat UI" ${JS_MIN}; \
+		for X in `ls ${DIST_DIR}/*.js | xargs basename`; do \
+			${COMPILER} ${DIST_DIR}/$${X} > ${DIST_DIR}/`echo $${X} | sed 's/\..*//g'`.min.js; \
+		done; \
+	else \
+		echo "You must have NodeJS installed in order to minify jStat UI."; \
+	fi
 
-lint: jstatui
+lint: flot
 	@@if test ! -z ${JS_ENGINE}; then \
 		echo "Checking jStat UI against JSHint..."; \
 		${JS_ENGINE} ${BUILD_DIR}/jshint-check.js; \
@@ -31,20 +40,9 @@ lint: jstatui
 		echo "You must have NodeJS installed in order to test jStat UI against JSHint."; \
 	fi
 
-jstatui: ${DIST_DIR}
-	@@echo "DEBUG: ${BASE_DIRS}"
-	@@for i in ${BASE_DIRS}; do \
-		echo "Building" ${i}; \
-		cat ${SRC_DIR}/${i}/*.js > ${DIST_DIR}/${i}.js; \
-	done
-
-plugin_min: jstatui
-	@@if test ! -z ${JS_ENGINE}; then \
-		echo "Minifying jStat UI" ${JS_MIN}; \
-		${COMPILER} ${JS} > ${JS_MIN}; \
-	else \
-		echo "You must have NodeJS installed in order to minify jStat UI."; \
-	fi
+flot: ${DIST_DIR}
+	@@echo "Building Flot"
+	@@cat ${FLOT_FILES} > ${DIST_DIR}/flot.js
 
 ${DIST_DIR}:
 	@@mkdir -p ${DIST_DIR}
@@ -58,4 +56,4 @@ doc:
 		${JS_ENGINE} ${BUILD_DIR}/doctool.js ${DOC_DIR}/assets/template.html ${DOC_DIR}/md/$${i} ${DIST_DIR}/docs/$${i%.*}.html; \
 	done
 
-.PHONY: all clean core min lint jstatui plugin_min doc
+.PHONY: all clean core min lint flot doc

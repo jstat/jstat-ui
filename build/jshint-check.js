@@ -1,6 +1,6 @@
 var JSHINT = require("./lib/jshint").JSHINT,
 	print = require("sys").print,
-	src = require("fs").readFileSync("dist/jstat.js", "utf8");
+	src = require("fs").readFileSync("dist/flot.js", "utf8");
 
 JSHINT( src, {
 	browser: true,
