@@ -3,20 +3,34 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title>Flot Tests</title>
+	<link rel="stylesheet" href="../../lib/css/smoothness/jquery-ui.custom.css" />
 	<link rel="stylesheet" href="style.css" />
 	<script src="../../lib/js/jquery.min.js"></script>
 	<script src="../../lib/js/jquery.flot.min.js"></script>
+	<script src="../../lib/js/jquery.jqml.min.js"></script>
 	<script src="../../lib/js/jstat.min.js"></script>
+	<script src="../../lib/js/jquery-ui.custom.min.js"></script>
 	<script src="../../plugin/flot/core.js"></script>
 	<script src="script.js"></script>
 </head>
 <body>
 	<h1>Basic Graphs</h1>
-	<h2>Beta Distriubtion</h2>
-	<div class="graph-example" id="betadiv"></div>
-	<h2>Cauchy Distriubtion</h2>
-	<div class="graph-example" id="cauchydiv"></div>
-	<h2>Student T Distriubtion</h2>
-	<div class="graph-example" id="studenttdiv"></div>
+
+	<div id="ui-demo">
+		<form>
+			<div id="dist-select" class="graph-buttons">
+				<input type="radio" name="distradio" id="dist-beta" /><label for="dist-beta">Beta</label>
+				<input type="radio" name="distradio" id="dist-cauchy" /><label for="dist-cauchy">Cauchy</label>
+				<input type="radio" name="distradio" id="dist-studentt" /><label for="dist-studentt">StudentT</label>
+			</div>
+			<div id="plot-select" class="graph-buttons">
+				<input type="radio" name="plotradio" id="plot-pdf" /><label for="plot-pdf">PDF</label>
+				<input type="radio" name="plotradio" id="plot-cdf" /><label for="plot-cdf">CDF</label>
+				<input type="radio" name="plotradio" id="plot-both" /><label for="plot-both">Both</label>
+			</div>
+		</form>
+		<div class="graph-example" id="ui-graph"></div>
+	</div>
+
 </body>
 </html>

@@ -1,4 +1,9 @@
-.graph-example{
+.graph-example {
 	width: 600px;
 	height: 400px;
+	margin-top: 30px;
+}
+
+.graph-buttons {
+	display: inline-block;
 }
